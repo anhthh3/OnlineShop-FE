@@ -62,7 +62,7 @@ export default function Header() {
           {/* <!-- header top left --> */}
           <div className="flex items-center gap-50 sm:gap-50">
             <Link href="/">
-              <span className="text-blue text-4xl font-bold">FPT Shop</span>
+              <span className="text-blue text-4xl font-bold">VMO Shop</span>
             </Link>
             <div className="w-[475px]">
               <div className="relative w-full">
