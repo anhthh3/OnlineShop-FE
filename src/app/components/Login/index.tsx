@@ -89,7 +89,7 @@ export default function Login() {
 
       // Redirect sau khi đăng nhập thành công
       const payload: tokenPayload = jwtDecode(result.accessToken);
-      if (payload.role == 1) {
+      if (payload.role === 1) {
         router.push('/admin');
       } else {
         router.push('/');

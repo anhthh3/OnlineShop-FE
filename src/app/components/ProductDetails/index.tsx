@@ -6,7 +6,7 @@ import Breadcrumb from '../Common/Breadcrumb';
 import { useEffect, useState } from 'react';
 import { getProduct } from '@/generated/api/endpoints/product/product';
 import { ProductResponse } from '@/generated/api/models';
-import { Box, CircularProgress } from '@mui/material';
+import { Box, Button, CircularProgress } from '@mui/material';
 import { useAuthStore } from '@/stores/authStore';
 import toast from 'react-hot-toast';
 import useCartStore from '@/stores/useCartStore';
@@ -21,6 +21,7 @@ const ProductDetails = () => {
   const [previewImg, setPreviewImg] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [stock, setStock] = useState(0);
+  const [isAdding, setIsAdding] = useState(false);
 
   const { user } = useAuthStore();
   const { cartItems, addItemToCart } = useCartStore();
@@ -57,7 +58,15 @@ const ProductDetails = () => {
       toast.error('You have to sign in!', { duration: 2000 });
       return;
     }
-    await addItemToCart(Number(productData?.id), quantity);
+    setIsAdding(true);
+
+    await toast.promise(addItemToCart(Number(productData?.id), quantity), {
+      loading: 'Adding to cart...',
+      success: 'Added to cart!',
+      error: 'Failed to add item!',
+    });
+
+    setIsAdding(false);
   };
 
   useEffect(() => {
@@ -265,17 +274,21 @@ const ProductDetails = () => {
                           </button>
                         </div>
 
-                        <button
+                        <Button
+                          variant="contained"
                           disabled={isAdded}
-                          onClick={!isAdded ? handleAddToCart : undefined}
-                          className={`inline-flex font-medium text-white py-3 px-7 rounded-md ${
+                          loading={isAdding}
+                          onClick={
+                            !isAdded && !isAdding ? handleAddToCart : undefined
+                          }
+                          className={`!inline-flex !font-medium !text-white !py-3 !px-7 !rounded-md transition-all ${
                             isAdded
-                              ? 'bg-dark-2 cursor-not-allowed'
-                              : 'bg-dark hover:bg-dark-2'
+                              ? '!bg-dark-2 !cursor-not-allowed'
+                              : '!bg-dark hover:!bg-dark-2'
                           }`}
                         >
                           {isAdded ? 'Added' : 'Add to Cart'}
-                        </button>
+                        </Button>
                       </div>
                     </form>
                   )}

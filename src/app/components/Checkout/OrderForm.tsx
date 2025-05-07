@@ -76,7 +76,8 @@ const ButtonCheckout = () => {
     getValues,
   } = useFormContext<OrderFormData>();
   const [paypalEnabled, setPaypalEnabled] = useState(false);
-  const [disablePlaceOrder, setDisablePlaceOrder] = useState(false);
+  const [disableCOD, setDisableCOD] = useState(false);
+  const [disablePaypal, setDisablePaypal] = useState(false);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const [retryOrderId, setRetryOrderId] = useState<string | null>(null);
@@ -104,6 +105,7 @@ const ButtonCheckout = () => {
 
   const onSubmit = async (data: OrderFormData) => {
     setIsPlacingOrder(true);
+    setDisablePaypal(true);
     try {
       const response = await ordersControllerCreate({
         paymentId: 1,
@@ -135,6 +137,7 @@ const ButtonCheckout = () => {
 
   const handleCreatePaypalOrder = async () => {
     try {
+      setDisableCOD(true);
       if (retryPaypalId) {
         return retryPaypalId;
       }
@@ -178,7 +181,6 @@ const ButtonCheckout = () => {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       toast.error('Failed to complete your order, please try again!');
-      setDisablePlaceOrder(true);
     }
   };
 
@@ -202,7 +204,7 @@ const ButtonCheckout = () => {
           variant="contained"
           color="primary"
           onClick={handleSubmit(onSubmit)}
-          disabled={disablePlaceOrder}
+          disabled={disableCOD}
           loading={isPlacingOrder}
         >
           Cash on delivery
@@ -219,7 +221,7 @@ const ButtonCheckout = () => {
                   label: 'checkout',
                 }}
                 forceReRender={[paypalEnabled]}
-                disabled={!paypalEnabled}
+                disabled={!paypalEnabled || disablePaypal}
                 onClick={handlePaypalClick}
                 createOrder={handleCreatePaypalOrder}
                 onApprove={({ orderID }, actions) =>

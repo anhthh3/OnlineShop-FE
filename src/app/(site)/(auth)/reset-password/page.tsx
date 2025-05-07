@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 import React, { Suspense } from 'react';
 
 export default function VerifyPage() {
-  const user = useAuthStore((state) => state.user);
+  const { user } = useAuthStore.getState();
 
   if (user) {
     window.location.href = '/';

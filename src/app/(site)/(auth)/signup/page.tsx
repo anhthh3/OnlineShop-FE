@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/authStore';
 import React from 'react';
 
 export default function SignupPage() {
-  const user = useAuthStore((state) => state.user);
+  const { user } = useAuthStore.getState();
 
   if (user) {
     window.location.href = '/';
