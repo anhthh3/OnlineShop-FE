@@ -61,8 +61,13 @@ export default function Header() {
         <div className="flex gap-5 items-end lg:items-center justify-between py-4">
           {/* <!-- header top left --> */}
           <div className="flex items-center gap-50 sm:gap-50">
-            <Link href="/">
-              <span className="text-blue text-4xl font-bold">VMO Shop</span>
+            <Link href="/" className="flex items-center">
+              <img
+                src="./images/logo2.png"
+                alt=""
+                className="w-22 mt-[7px] mr-1"
+              />
+              <span className="text-blue text-4xl font-bold">Shop</span>
             </Link>
             <div className="w-[475px]">
               <div className="relative w-full">
